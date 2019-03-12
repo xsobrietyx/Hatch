@@ -1,6 +1,5 @@
 package service.abstarctions
 
-import service.Device
 import service.abstarctions.RequestedInformation.RequestedInformation
 
 /**

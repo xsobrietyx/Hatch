@@ -51,7 +51,7 @@ object IOTServiceImpl extends IOTService {
     })
   }
 
-  override def healthCheck(): Boolean = thermostatDataStream.hasDefiniteSize
+  override def healthCheck(): Boolean = !thermostatDataStream.hasDefiniteSize
 }
 
 case class IOTServiceImpl()
