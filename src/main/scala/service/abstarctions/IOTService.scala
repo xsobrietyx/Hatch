@@ -1,5 +1,6 @@
 package service.abstarctions
 
+import service.abstarctions.DeviceType.DeviceType
 import service.abstarctions.RequestedInformation.RequestedInformation
 
 /**
@@ -7,6 +8,5 @@ import service.abstarctions.RequestedInformation.RequestedInformation
   */
 trait IOTService {
   def init(): Unit
-  def getData(typeOfData: RequestedInformation): BigDecimal
-  def healthCheck(): Boolean
+  def getData(typeOfDevice: DeviceType,typeOfData: RequestedInformation): BigDecimal
 }
