@@ -24,10 +24,7 @@ object IOTServiceImpl extends IOTService {
   private def getMaxData(frozen: Stream[Device]): BigDecimal = frozen.last.data
 
   private def getMedianData(frozen: Stream[Device]): BigDecimal = {
-    var result: BigDecimal = 0
-    frozen.foreach(Device => result += Device.data)
-
-    result / 2
+    frozen.take(frozen.size / 2).last.data
   }
 
 

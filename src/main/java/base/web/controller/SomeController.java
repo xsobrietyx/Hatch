@@ -22,7 +22,8 @@ public class SomeController {
         return "min:" + IOTServiceImpl.getData(RequestedInformation.min()).toString()
                 + " max:" + IOTServiceImpl.getData(RequestedInformation.max())
                 + " median:" + IOTServiceImpl.getData(RequestedInformation.median())
-                + " average:" + IOTServiceImpl.getData(RequestedInformation.average());
+                + " average:" + IOTServiceImpl.getData(RequestedInformation.average())
+                + " health check:" + IOTServiceImpl.healthCheck();
     }
 
 }
@@ -30,4 +31,5 @@ public class SomeController {
     TODO: split service method calls to different endpoints
     TODO: add java docs
     TODO: few additional dataSources should be created (thermostat etc.) and additional REST endpoints should be built for them
+    TODO: use futures
  */
