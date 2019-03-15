@@ -12,6 +12,8 @@ import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
 
 /**
+  * "Service" for data streaming simulation. Current implementation limited in device streams possible variations,
+  * multi maps and additional logic can solve this limitation.
   * Created by xsobrietyx on 12-March-2019 time 14:14
   */
 object IOTServiceImpl extends IOTService {
@@ -19,25 +21,55 @@ object IOTServiceImpl extends IOTService {
   private var devices: ListBuffer[Device] = _
   private var dataStreams: Map[DeviceType, Future[Stream[Device]]] = _
 
+  /**
+    * Average chunk of data that was already populated.
+    *
+    * @param frozen part of data stream from the beginning till the moment of request
+    * @return in current POC returns BigDecimal value
+    */
   private def getAverageData(frozen: Stream[Device]): BigDecimal = {
     var result: BigDecimal = 0
     frozen.foreach(Device => result += Device.data)
     result / frozen.size
   }
 
+  /**
+    * Starting chunk of data that was already populated.
+    *
+    * @param frozen part of data stream from the beginning till the moment of request
+    * @return in current POC returns BigDecimal value
+    */
   private def getMinData(frozen: Stream[Device]): BigDecimal = frozen.head.data
 
+  /**
+    * Last chunk of data that was already populated.
+    *
+    * @param frozen part of data stream from the beginning till the moment of request
+    * @return in current POC returns BigDecimal value
+    */
   private def getMaxData(frozen: Stream[Device]): BigDecimal = frozen.last.data
 
+  /**
+    * Middle chunk of data that was already populated.
+    *
+    * @param frozen part of data stream from the beginning till the moment of request
+    * @return in current POC returns BigDecimal value
+    */
   private def getMedianData(frozen: Stream[Device]): BigDecimal = {
     frozen.take(frozen.size / 2).last.data
   }
 
-
-  override def getData(typeOfDevice: DeviceType, typeOfOperation: RequestedInformation): BigDecimal = {
+  /**
+    * Returns data depending on device type and type of data that requested.
+    *
+    * @param typeOfDevice type of device
+    * @param typeOfData   type of data
+    * @return in current POC returns BigDecimal value
+    */
+  override def getData(typeOfDevice: DeviceType, typeOfData: RequestedInformation): BigDecimal = {
     val frozenStream: Stream[Device] = Await.result(dataStreams(typeOfDevice), 5.seconds).takeWhile(Device => Device.time.isBefore(LocalDateTime.now()))
 
-    typeOfOperation match {
+    typeOfData match {
       case RequestedInformation.average => getAverageData(frozenStream)
       case RequestedInformation.median => getMedianData(frozenStream)
       case RequestedInformation.min => getMinData(frozenStream)
@@ -46,6 +78,9 @@ object IOTServiceImpl extends IOTService {
     }
   }
 
+  /**
+    * Inits current POC with starting data.
+    */
   def init(): Unit = {
     startTime = LocalDateTime.now()
     devices = new ListBuffer[Device]
@@ -57,6 +92,12 @@ object IOTServiceImpl extends IOTService {
     dataStreams = devices.map(device => device.deviceType -> createStream(device)).toMap
   }
 
+  /**
+    * Creates a future of device's stream.
+    *
+    * @param device source of data
+    * @return future of device's data stream
+    */
   private def createStream(device: Device): Future[Stream[Device]] = Future {
     var dev = device
     Stream.continually({
@@ -65,6 +106,13 @@ object IOTServiceImpl extends IOTService {
     })
   }
 
+  /**
+    * Method to add an additional device to the application. Current implementation assumes that device of type A could
+    * be replaced with another device of the same type. To be able to add multiple devices Multimap and additional
+    * device id's can be used.
+    *
+    * @param device device that should be added
+    */
   override def addDevice(device: Device): Unit = {
     val sizeBefore = devices.length
     devices += device
