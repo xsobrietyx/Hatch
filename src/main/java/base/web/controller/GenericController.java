@@ -42,22 +42,22 @@ public class GenericController {
 
     @RequestMapping(value = "/{type}/min", method = GET)
     public String getMin(@PathVariable String type) {
-        return "min:" + IOTServiceImpl.getData(devicesMapping.get(type), RequestedInformation.min()).toString();
+        return "min:" + IOTServiceImpl.getData(devicesMapping.get(type), RequestedInformation.min());
     }
 
     @RequestMapping(value = "/{type}/max", method = GET)
     public String getMax(@PathVariable String type) {
-        return "max:" + IOTServiceImpl.getData(devicesMapping.get(type), RequestedInformation.max()).toString();
+        return "max:" + IOTServiceImpl.getData(devicesMapping.get(type), RequestedInformation.max());
     }
 
     @RequestMapping(value = "/{type}/median", method = GET)
     public String getMedian(@PathVariable String type) {
-        return "median:" + IOTServiceImpl.getData(devicesMapping.get(type), RequestedInformation.median()).toString();
+        return "median:" + IOTServiceImpl.getData(devicesMapping.get(type), RequestedInformation.median());
     }
 
     @RequestMapping(value = "/{type}/average", method = GET)
     public String getAverage(@PathVariable String type) {
-        return "average:" + IOTServiceImpl.getData(devicesMapping.get(type), RequestedInformation.average()).toString();
+        return "average:" + IOTServiceImpl.getData(devicesMapping.get(type), RequestedInformation.average());
     }
 
 }

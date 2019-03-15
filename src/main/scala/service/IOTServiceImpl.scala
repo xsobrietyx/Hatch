@@ -34,10 +34,10 @@ object IOTServiceImpl extends IOTService {
   }
 
 
-  override def getData(typeOfDevice: DeviceType, typeOfData: RequestedInformation): BigDecimal = {
-    var frozenStream: Stream[Device] = Await.result(dataStreams(typeOfDevice), 25.seconds).takeWhile(Device => Device.time.isBefore(LocalDateTime.now()))
+  override def getData(typeOfDevice: DeviceType, typeOfOperation: RequestedInformation): BigDecimal = {
+    val frozenStream: Stream[Device] = Await.result(dataStreams(typeOfDevice), 5.seconds).takeWhile(Device => Device.time.isBefore(LocalDateTime.now()))
 
-    typeOfData match {
+    typeOfOperation match {
       case RequestedInformation.average => getAverageData(frozenStream)
       case RequestedInformation.median => getMedianData(frozenStream)
       case RequestedInformation.min => getMinData(frozenStream)
@@ -46,7 +46,7 @@ object IOTServiceImpl extends IOTService {
     }
   }
 
-  override def init(): Unit = {
+  def init(): Unit = {
     startTime = LocalDateTime.now()
     devices = new ListBuffer[Device]
 
@@ -57,7 +57,7 @@ object IOTServiceImpl extends IOTService {
     dataStreams = devices.map(device => device.deviceType -> createStream(device)).toMap
   }
 
-  def createStream(device: Device): Future[Stream[Device]] = Future {
+  private def createStream(device: Device): Future[Stream[Device]] = Future {
     var dev = device
     Stream.continually({
       dev = Device(dev.deviceType, dev.data + .1, dev.time.plusSeconds(1))
@@ -65,13 +65,12 @@ object IOTServiceImpl extends IOTService {
     })
   }
 
-  def addDevice(device: Device): Boolean = {
+  override def addDevice(device: Device): Unit = {
     val sizeBefore = devices.length
     devices += device
-    if (sizeBefore >= devices.length) false
+    if (sizeBefore >= devices.length) throw new RuntimeException("Device not added.")
     else {
       dataStreams += device.deviceType -> createStream(device)
-      true
     }
   }
 
