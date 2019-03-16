@@ -12,8 +12,10 @@ import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
 
 /**
-  * "Service" for data streaming simulation. Current implementation limited in device streams possible variations,
-  * multi maps and additional logic can solve this limitation.
+  * Service for data streaming simulation. Current implementation limited in device streams possible variations,
+  * multi maps and additional id's logic can solve this limitation.
+  * Service was created as singleton object for synchronised state in case of usage from multiple controllers across
+  * the same application.
   * Created by xsobrietyx on 12-March-2019 time 14:14
   */
 object IOTServiceImpl extends IOTService {
@@ -79,7 +81,8 @@ object IOTServiceImpl extends IOTService {
   }
 
   /**
-    * Inits current POC with starting data.
+    * Inits current POC with starting data. It should be done for initialization of current service
+    * context before the first request.
     */
   def init(): Unit = {
     startTime = LocalDateTime.now()
@@ -107,9 +110,9 @@ object IOTServiceImpl extends IOTService {
   }
 
   /**
-    * Method to add an additional device to the application. Current implementation assumes that device of type A could
-    * be replaced with another device of the same type. To be able to add multiple devices Multimap and additional
-    * device id's can be used.
+    * Method to add an additional device to the application. Current implementation assumes that device can be added
+    * but the stream of data of the device of that type will be replaced (if already exists). To be able to add additional
+    * streams of the same device type multi map can be used.
     *
     * @param device device that should be added
     */
@@ -123,5 +126,3 @@ object IOTServiceImpl extends IOTService {
   }
 
 }
-
-case class IOTServiceImpl()

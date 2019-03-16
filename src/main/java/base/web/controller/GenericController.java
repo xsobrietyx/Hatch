@@ -4,14 +4,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import scala.Enumeration;
-import service.IOTServiceImpl;
 import service.abstarctions.DeviceType;
-import service.abstarctions.RequestedInformation;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static service.IOTServiceImpl.getData;
+import static service.abstarctions.RequestedInformation.average;
+import static service.abstarctions.RequestedInformation.max;
+import static service.abstarctions.RequestedInformation.median;
+import static service.abstarctions.RequestedInformation.min;
 
 /**
  * Created by xsobrietyx on 12-March-2019 time 18:55
@@ -22,7 +25,6 @@ public class GenericController {
 
     @PostConstruct
     private void initDataStreaming() {
-        IOTServiceImpl.init();
         devicesMapping = new HashMap<>();
         devicesMapping.put("thermostat", DeviceType.thermostat());
         devicesMapping.put("heartRateMeter", DeviceType.heartRateMeter());
@@ -42,22 +44,22 @@ public class GenericController {
 
     @RequestMapping(value = "/{type}/min", method = GET)
     public String getMin(@PathVariable String type) {
-        return "min:" + IOTServiceImpl.getData(devicesMapping.get(type), RequestedInformation.min());
+        return "min:" + getData(devicesMapping.get(type), min());
     }
 
     @RequestMapping(value = "/{type}/max", method = GET)
     public String getMax(@PathVariable String type) {
-        return "max:" + IOTServiceImpl.getData(devicesMapping.get(type), RequestedInformation.max());
+        return "max:" + getData(devicesMapping.get(type), max());
     }
 
     @RequestMapping(value = "/{type}/median", method = GET)
     public String getMedian(@PathVariable String type) {
-        return "median:" + IOTServiceImpl.getData(devicesMapping.get(type), RequestedInformation.median());
+        return "median:" + getData(devicesMapping.get(type), median());
     }
 
     @RequestMapping(value = "/{type}/average", method = GET)
     public String getAverage(@PathVariable String type) {
-        return "average:" + IOTServiceImpl.getData(devicesMapping.get(type), RequestedInformation.average());
+        return "average:" + getData(devicesMapping.get(type), average());
     }
 
 }
