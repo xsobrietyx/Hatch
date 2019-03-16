@@ -7,7 +7,7 @@ To launch current application you just need to:
 - clone the master branch to the local disk using Git
 - Resolve all the runtime dependencies (Java, Scala)
 - Launch the application using the SpringBoot Maven Runner
-- localhost:8081 is the road map of the POC API
+- localhost:8081 is the road map of the POC API description
 - you can configure the port within application.properties
 
 # In progress
