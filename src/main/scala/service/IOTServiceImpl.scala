@@ -70,11 +70,11 @@ object IOTServiceImpl extends IOTService {
     */
   override def getData(typeOfDevice: DeviceType, typeOfData: RequestedInformation): BigDecimal = {
     def createDevicesStreamMap: Map[DeviceType, Future[Stream[Device]]] = {
-      devices.map(device => device.deviceType -> createStream(device)).toMap
+      devices.map(device => device.deviceType -> createFutureOfStream(device)).toMap
     }
 
     val streams: Map[DeviceType, Future[Stream[Device]]] = createDevicesStreamMap
-    val frozenStream: Stream[Device] = Await.result(streams(typeOfDevice), 5.seconds).takeWhile(Device => Device.time.isBefore(LocalDateTime.now()))
+    val frozenStream: Stream[Device] = Await.result(streams(typeOfDevice), 2.seconds).takeWhile(Device => Device.time.isBefore(LocalDateTime.now()))
 
     typeOfData match {
       case RequestedInformation.average => getAverageData(frozenStream)
@@ -91,7 +91,7 @@ object IOTServiceImpl extends IOTService {
     * @param device source of data
     * @return future of device's data stream
     */
-  private def createStream(device: Device): Future[Stream[Device]] = Future {
+  private def createFutureOfStream(device: Device): Future[Stream[Device]] = Future {
     var dev = device
     Stream.continually({
       dev = Device(dev.deviceType, dev.data + .1, dev.time.plusSeconds(1))
