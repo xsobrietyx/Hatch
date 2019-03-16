@@ -24,7 +24,7 @@ public class GenericController {
     private HashMap<String, Enumeration.Value> devicesMapping;
 
     @PostConstruct
-    private void initDataStreaming() {
+    private void populateDevicesMapping() {
         devicesMapping = new HashMap<>();
         devicesMapping.put("thermostat", DeviceType.thermostat());
         devicesMapping.put("heartRateMeter", DeviceType.heartRateMeter());
