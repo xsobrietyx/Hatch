@@ -28,8 +28,13 @@ public class Config {
     public void initService() {
         LocalDateTime startTime = LocalDateTime.now();
 
-        IOTServiceImpl.addDevice(new Device(thermostat(), int2bigDecimal(0), startTime));
-        IOTServiceImpl.addDevice(new Device(heartRateMeter(), int2bigDecimal(50), startTime));
-        IOTServiceImpl.addDevice(new Device(musicPlayer(), int2bigDecimal(100), startTime));
+        try {
+            IOTServiceImpl.addDevice(new Device(thermostat(), int2bigDecimal(0), startTime));
+            IOTServiceImpl.addDevice(new Device(heartRateMeter(), int2bigDecimal(50), startTime));
+            IOTServiceImpl.addDevice(new Device(musicPlayer(), int2bigDecimal(100), startTime));
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+
     }
 }
