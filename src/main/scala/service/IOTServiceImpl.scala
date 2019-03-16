@@ -74,6 +74,7 @@ object IOTServiceImpl extends IOTService {
     }
 
     val streams: Map[DeviceType, Future[Stream[Device]]] = createDevicesStreamMap
+    // Also we can use promises instead await
     val frozenStream: Stream[Device] = Await.result(streams(typeOfDevice), 2.seconds).takeWhile(Device => Device.time.isBefore(LocalDateTime.now()))
 
     typeOfData match {
