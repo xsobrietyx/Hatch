@@ -12,4 +12,3 @@ To launch current application you just need to:
 
 # In progress
 - Unit tests
-- UML
