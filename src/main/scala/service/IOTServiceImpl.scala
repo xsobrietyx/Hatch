@@ -61,6 +61,8 @@ object IOTServiceImpl extends IOTService {
 
   /**
     * Returns data depending on device type and type of data that requested.
+    * Also performs necessary data transformations and calculations.
+    * Hold's the core service's logic.
     *
     * @param typeOfDevice type of device
     * @param typeOfData   type of data
