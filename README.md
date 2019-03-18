@@ -9,6 +9,3 @@ To launch current application you just need to:
 - Launch the application using the SpringBoot Maven Runner
 - localhost:8081 is the road map of the POC API description
 - you can configure the port within application.properties
-
-# In progress
-- Unit tests
