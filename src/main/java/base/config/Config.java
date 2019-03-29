@@ -3,16 +3,16 @@ package base.config;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import service.Device;
 import service.IOTServiceImpl;
+import service.interfaces.Device;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 
 import static scala.math.BigDecimal.int2bigDecimal;
-import static service.abstarctions.DeviceType.heartRateMeter;
-import static service.abstarctions.DeviceType.musicPlayer;
-import static service.abstarctions.DeviceType.thermostat;
+import static service.interfaces.DeviceType.heartRateMeter;
+import static service.interfaces.DeviceType.musicPlayer;
+import static service.interfaces.DeviceType.thermostat;
 
 /**
  * Created by xsobrietyx on 12-March-2019 time 18:57

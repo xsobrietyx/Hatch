@@ -1,16 +1,5 @@
 package service
 
-import java.time.LocalDateTime
-
-import service.abstarctions.DeviceType.DeviceType
-import service.abstarctions.RequestedInformation.RequestedInformation
-import service.abstarctions.{IOTService, RequestedInformation}
-
-import scala.collection.mutable.ListBuffer
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
-
 /**
   * Service for data streaming simulation. Current implementation limited in device streams possible variations,
   * multi maps and additional id's logic can solve this limitation.
@@ -19,7 +8,13 @@ import scala.concurrent.{Await, Future}
   * Created by xsobrietyx on 12-March-2019 time 14:14
   */
 object IOTServiceImpl extends IOTService {
-  private val devices: ListBuffer[Device] = new ListBuffer[Device]
+
+  import service.interfaces.Device
+  import service.interfaces.DeviceType.DeviceType
+  import service.interfaces.RequestedInformation.RequestedInformation
+
+  import scala.concurrent.ExecutionContext.Implicits.global
+  import scala.concurrent.{Await, Future}
 
   /**
     * Average chunk of data that was already populated.
@@ -69,6 +64,12 @@ object IOTServiceImpl extends IOTService {
     * @return in current POC returns BigDecimal value
     */
   override def getData(typeOfDevice: DeviceType, typeOfData: RequestedInformation): BigDecimal = {
+    import java.time.LocalDateTime
+
+    import service.interfaces.RequestedInformation
+
+    import scala.concurrent.duration._
+
     def createDevicesStreamMap: Map[DeviceType, Future[Stream[Device]]] = {
       devices.map(device => device.deviceType -> createFutureOfStream(device)).toMap
     }

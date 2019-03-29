@@ -1,4 +1,4 @@
-package service.abstarctions
+package service.interfaces
 
 /**
   * Created by xsobrietyx on 12-March-2019 time 20:46

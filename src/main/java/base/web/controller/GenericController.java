@@ -4,17 +4,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import scala.Enumeration;
-import service.abstarctions.DeviceType;
+import service.interfaces.DeviceType;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static service.IOTServiceImpl.getData;
-import static service.abstarctions.RequestedInformation.average;
-import static service.abstarctions.RequestedInformation.max;
-import static service.abstarctions.RequestedInformation.median;
-import static service.abstarctions.RequestedInformation.min;
+import static service.interfaces.RequestedInformation.average;
+import static service.interfaces.RequestedInformation.max;
+import static service.interfaces.RequestedInformation.median;
+import static service.interfaces.RequestedInformation.min;
 
 /**
  * Created by xsobrietyx on 12-March-2019 time 18:55
