@@ -12,11 +12,11 @@ package object service {
   /**
     * Created by xsobrietyx on 12-March-2019 time 16:43
     */
-  abstract class IOTService[A <: Device, B <: DeviceType, C <: RequestedInformation] {
+  abstract class IOTService[D <: Device, T <: DeviceType, R <: RequestedInformation] {
 
-    private[service] val devices: ListBuffer[A] = new ListBuffer[A]
+    private[service] val devices: ListBuffer[D] = new ListBuffer[D]
 
-    def getData(typeOfDevice: B, typeOfData: C): BigDecimal
+    def getData(typeOfDevice: T, typeOfData: R): BigDecimal
 
     /**
       * Method to add an additional device to the application. Current implementation assumes that device can be added
@@ -25,7 +25,7 @@ package object service {
       *
       * @param device device that should be added
       */
-    def addDevice(device: A): Unit = {
+    def addDevice(device: D): Unit = {
       val sizeBefore = devices.length
       devices += device
       if (sizeBefore >= devices.length) throw new RuntimeException("Device not added.")
