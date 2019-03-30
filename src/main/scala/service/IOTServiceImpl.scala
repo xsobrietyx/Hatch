@@ -1,5 +1,9 @@
 package service
 
+import service.interfaces.Device
+import service.interfaces.DeviceType.DeviceType
+import service.interfaces.RequestedInformation.RequestedInformation
+
 /**
   * Service for data streaming simulation. Current implementation limited in device streams possible variations,
   * multi maps and additional id's logic can solve this limitation.
@@ -7,11 +11,9 @@ package service
   * the same application.
   * Created by xsobrietyx on 12-March-2019 time 14:14
   */
-object IOTServiceImpl extends IOTService {
+object IOTServiceImpl extends IOTService[Device, DeviceType, RequestedInformation] {
 
   import service.interfaces.Device
-  import service.interfaces.DeviceType.DeviceType
-  import service.interfaces.RequestedInformation.RequestedInformation
 
   import scala.concurrent.ExecutionContext.Implicits.global
   import scala.concurrent.{Await, Future}
@@ -100,18 +102,4 @@ object IOTServiceImpl extends IOTService {
       dev
     })
   }
-
-  /**
-    * Method to add an additional device to the application. Current implementation assumes that device can be added
-    * but the stream of data of the device of that type will be replaced (if already exists). To be able to add additional
-    * streams of the same device type multi map can be used.
-    *
-    * @param device device that should be added
-    */
-  override def addDevice(device: Device): Unit = {
-    val sizeBefore = devices.length
-    devices += device
-    if (sizeBefore >= devices.length) throw new RuntimeException("Device not added.")
-  }
-
 }
