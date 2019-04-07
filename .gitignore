@@ -3,9 +3,9 @@
 ### Example user template
 
 # IntelliJ project files
+.idea
 *.iml
 out
 gen
-t
 .DS_Store
 target/
