@@ -4,6 +4,31 @@ import service.interfaces.Device
 import service.interfaces.DeviceType.DeviceType
 import service.interfaces.RequestedInformation.RequestedInformation
 
+import scala.collection.mutable.ListBuffer
+
+/**
+  * Created by xsobrietyx on 12-March-2019 time 16:43
+  */
+sealed abstract class IOTService[Device, T <: DeviceType, R <: RequestedInformation] {
+
+  private[service] val devices: ListBuffer[Device] = new ListBuffer[Device]
+
+  def getData(typeOfDevice: T, typeOfData: R): BigDecimal
+
+  /**
+    * Method to add an additional device to the application. Current implementation assumes that device can be added
+    * but the stream of data of the device of that type will be replaced (if already exists). To be able to add additional
+    * streams of the same device type multi map can be used.
+    *
+    * @param device device that should be added
+    */
+  def addDevice(device: Device): Unit = {
+    val sizeBefore = devices.length
+    devices += device
+    if (sizeBefore >= devices.length) throw new RuntimeException("Device not added.")
+  }
+}
+
 /**
   * Service for data streaming simulation. Current implementation limited in device streams possible variations,
   * multi maps and additional id's logic can solve this limitation.
