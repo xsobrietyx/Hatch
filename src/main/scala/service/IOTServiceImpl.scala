@@ -1,6 +1,5 @@
 package service
 
-import service.interfaces.Device
 import service.interfaces.DeviceType.DeviceType
 import service.interfaces.RequestedInformation.RequestedInformation
 
@@ -37,8 +36,6 @@ sealed abstract class IOTService[Device, T <: DeviceType, R <: RequestedInformat
   * Created by xsobrietyx on 12-March-2019 time 14:14
   */
 object IOTServiceImpl extends IOTService[Device, DeviceType, RequestedInformation] {
-
-  import service.interfaces.Device
 
   import scala.concurrent.ExecutionContext.Implicits.global
   import scala.concurrent.{Await, Future}

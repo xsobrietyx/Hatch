@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import service.IOTServiceImpl;
-import service.interfaces.Device;
+import service.Device;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
